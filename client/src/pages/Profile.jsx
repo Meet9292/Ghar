@@ -1,19 +1,23 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/storage'
 import {app} from '../firebase'
+import {updateUserStart,updateUserSuccess,updateUserFailure} from '../redux/user/userSlice'
 
 function Profile() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const fileRef = useRef(null);
   const [file, setFile] = useState(undefined);
   const [formData,setFormData] = useState({})
   const [filePer , setFilePer] = useState(0)
   const [uploadError , setUploadError] = useState(false)
+  const [updateSuccess , setUpdateSuccess] = useState(false)
+
+  const dispatch = useDispatch()
 
   // console.log(filePer);
   // console.log(file);
-  console.log(formData);
+  // console.log(formData);
 
   const handleFileUpload=(file)=>{
     const storage = getStorage(app);
@@ -45,12 +49,43 @@ function Profile() {
       handleFileUpload(file);
     }
   },[file])
-  
+
+  const handleChange = (e)=>{
+    setFormData({...formData,[e.target.id]:e.target.value})
+  }
+
+  const handleSubmit = async (e)=>{
+    e.preventDefault()
+    try {
+      dispatch(updateUserStart())
+
+      const res = await fetch(`/server/user/update/${currentUser._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }, 
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json()
+      if(data.success === false)
+      {
+        dispatch(updateUserFailure(error.message))
+      }
+
+    dispatch(updateUserSuccess(data))
+    setUpdateSuccess(true)
+
+    } catch (error) {
+      dispatch(updateUserFailure(error.message))
+    }
+
+  }  
 
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
-      <form className="flex flex-col gap-4" action="">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4" action="">
         <input
           onChange={(e) => setFile(e.target.files[0])}
           type="file"
@@ -69,13 +104,13 @@ function Profile() {
         <p className="text-sm  self-center">
           {
             uploadError ? (
-              <span className="text- bg-red-700">Error Image upload</span>
+              <span className="text-red-700">Error Image upload</span>
             ) : 
               filePer > 0 && filePer < 100 ? (
                 <span className="text-slate-700">{`Uploading ${filePer}%`}</span>
               ) : 
                 filePer === 100  ? (
-                  <span className="to-green-700">Success</span>
+                  <span className="text-green-700">Success</span>
                 ) : (
                 ''
               )
@@ -86,25 +121,29 @@ function Profile() {
           className="rounded-lg border p-3"
           id="username"
           type="text"
+          defaultValue={currentUser.username}
           placeholder="Username"
+          onChange={handleChange}
         />
 
         <input
           className="rounded-lg border p-3"
           id="email"
+          defaultValue={currentUser.email}
           type="email"
+          onChange={handleChange}
           placeholder="Email"
         />
 
         <input
           className="rounded-lg border p-3"
           id="password"
-          type="text"
+          type="password"
           placeholder="Password"
         />
 
-        <button className="bg-slate-700 text-white rounded-lg p-3 hover:opacity-90 uppercase disabled:placeholder-opacity-80">
-          Update
+        <button disabled={loading} className="bg-slate-700 text-white rounded-lg p-3 hover:opacity-90 uppercase disabled:placeholder-opacity-80">
+          {loading ? 'Loading...' : 'Update'}
         </button>
       </form>
 
@@ -112,6 +151,8 @@ function Profile() {
         <span className="text-red-700 cursor-pointer">Delete account</span>
         <span className="text-red-700 cursor-pointer">Sign out</span>
       </div>
+      <p className="text-red-700">{error ? error : ''}</p>
+      <p className="text-green-700 mt-5">{updateSuccess ? 'User is updated successfully' : ''}</p>
     </div>
   );
 }
