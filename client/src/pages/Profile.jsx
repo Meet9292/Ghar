@@ -11,7 +11,6 @@ function Profile() {
   const [filePer , setFilePer] = useState(0)
   const [uploadError , setUploadError] = useState(false)
 
-
   // console.log(filePer);
   // console.log(file);
   console.log(formData);
