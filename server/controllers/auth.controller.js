@@ -5,11 +5,13 @@ import jwt from 'jsonwebtoken'
 
 // Sign up api route
 export const signup = async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, email, password , avatar } = req.body;
 
   const hashedPassword = bcryptjs.hashSync(password,10)
 
-  const newUser = new User({ username, email, password : hashedPassword });
+  const defaultAvatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+
+  const newUser = new User({ username, email, password : hashedPassword , avatar : defaultAvatar});
 
   try {
       await newUser.save()
@@ -17,6 +19,7 @@ export const signup = async (req, res, next) => {
     
   } catch (error) {
     next(error)
+    // return next(errorHandler(401,'Email id is already present'))
   } 
 };
 

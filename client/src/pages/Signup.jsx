@@ -59,11 +59,11 @@ function Signup() {
 
       <form onSubmit={handleSubmit} action="" className='flex flex-col  gap-5'>
 
-        <input type="text" placeholder='Username' id='username'className='border p-3 rounded-lg' onChange={handleChange} />
+        <input type="text" required placeholder='Username' id='username'className='border p-3 rounded-lg' onChange={handleChange} />
 
-        <input type="text" placeholder='Email' id='email'className='border p-3 rounded-lg' onChange={handleChange} />
+        <input type="text" required placeholder='Email' id='email'className='border p-3 rounded-lg' onChange={handleChange} />
 
-        <input type="text" placeholder='Password' id='password'className='border p-3 rounded-lg' onChange={handleChange} />
+        <input type="text" required placeholder='Password' id='password'className='border p-3 rounded-lg' onChange={handleChange} />
 
         <button disabled={loading} className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-80'>{loading ? 'Loading...' : 'Sign Up'}</button>
         <OAuth/>
