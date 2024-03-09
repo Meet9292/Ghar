@@ -5,6 +5,8 @@ import userRouter from './routes/user.route.js'
 import authRouter from './routes/auth.route.js'
 import listingRouter from './routes/listing.route.js'
 import cookieParser from 'cookie-parser'
+import Path from 'path'
+import path from 'path'
 dotenv.config()
 
 mongoose.connect(process.env.MONGO)
@@ -14,6 +16,9 @@ mongoose.connect(process.env.MONGO)
 .catch((e)=>{
     console.log(e);
 })
+
+// For Deploy
+const __dirname = path.resolve()
 
 
 const app = express()
@@ -33,6 +38,13 @@ app.use("/server/auth",authRouter)
 
 // Listing Router
 app.use("/server/listing",listingRouter)
+
+// for deploy
+app.use(express.static(path.join(__dirname,'/client/dist')))
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,'client','dist','index.html'))
+})
+
 
 //MiddleWare
 app.use((err,req,res,next)=>{
