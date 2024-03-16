@@ -30,7 +30,7 @@ function Header() {
 
         <Link to='/'>
         <h1 className='font-bold text-sm sm:text-xl'>
-            <span className='text-slate-500'>Ghar</span>
+            <span className='text-slate-500 text-3xl'>Ghar</span>
         </h1>
         </Link>
 
@@ -49,10 +49,29 @@ function Header() {
           </button>
         </form>
 
-        <ul className='flex gap-4'>
-            <Link to='/'>
+        <ul className='flex gap-6'>
+
+          {currentUser ? <span className='flex gap-6'>
+            <Link to='/search?type=rent'>
+            <li className='hidden sm:inline text-slate-700 hover:underline'>For Rent</li>
+            </Link>
+            <Link to='/search?type=sell'>
+            <li className='hidden sm:inline text-slate-700 hover:underline'>For Sell</li>
+            </Link>
+            <Link to='/search?offer=true'>
+            <li className='hidden sm:inline text-slate-700 hover:underline'>Recent Offers</li>
+            </Link>
+            </span>
+             : 
+             <span>
+              <Link to='/'>
             <li className='hidden sm:inline text-slate-700 hover:underline'>Home</li>
             </Link>
+            </span>}
+
+            {/* <Link to='/'>
+            <li className='hidden sm:inline text-slate-700 hover:underline'>Home</li>
+            </Link> */}
 
             <Link to='/about'>
             <li className='hidden sm:inline text-slate-700 hover:underline'>About</li>

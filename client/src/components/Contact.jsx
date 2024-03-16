@@ -45,8 +45,8 @@ function Contact({ listing }) {
 
           <Link
             className="bg-slate-700 text-white text-center p-3 uppercase rounded-lg hover:opacity-90"
-            to={`mailto:${landlord.email}?subject=Regarding${listing.name}
-            &body=${message}`}
+            to={`mailto:${landlord.email}?subject=Regarding ${listing.name}
+            &body =${message}`}
           >
             Send Message
           </Link>

@@ -59,10 +59,9 @@ export default function Home() {
           place with ease
         </h1>
         <div className="text-gray-400 text-xs sm:text-sm">
-          Sahand Estate is the best place to find your next perfect place to
-          live.
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis ducimus id quam eligendi placeat consequuntur!
           <br />
-          We have a wide range of properties for you to choose from.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit.
         </div>
         <Link
           to={"/search"}
@@ -74,16 +73,16 @@ export default function Home() {
 
       {/* swiper section */}
       <Swiper navigation>
-        {offerListings &&
-          offerListings.length > 0 &&
-          offerListings.map((listing) => (
+        {rentListings &&
+          rentListings.length > 0 &&
+          rentListings.map((listing) => (
             <SwiperSlide>
               <div
                 style={{
                   background: `url(${listing.imageUrls[0]}) center no-repeat`,
                   backgroundSize: "cover",
                 }}
-                className="h-[500px]"
+                className="h-[600px]"
                 key={listing._id}
               ></div>
             </SwiperSlide>

@@ -32,10 +32,6 @@ function Profile() {
   const [userListings, setUserListings] = useState([]);
   const dispatch = useDispatch();
 
-  // console.log(filePer);
-  // console.log(file);
-  // console.log(formData);
-
   const handleFileUpload = (file) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
@@ -250,7 +246,7 @@ function Profile() {
         </span>
       </div>
       <p className="text-red-700">{error ? error : ""}</p>
-      <p className="text-green-700 mt-5">
+      <p className="text-green-700 mt-5 p-3 rounded-lg text-center uppercase">
         {updateSuccess ? "User is updated successfully" : ""}
       </p>
 
